@@ -1,6 +1,7 @@
 package de.gurkenwerfer.dougdougclientclient;
 
 import com.terraformersmc.modmenu.api.ModMenuApi;
+import de.gurkenwerfer.dougdougclientclient.classes.Keybinds;
 import de.gurkenwerfer.dougdougclientclient.classes.ModConfig;
 import de.gurkenwerfer.dougdougclientclient.classes.ModuleManager;
 import net.fabricmc.api.ClientModInitializer;
@@ -21,8 +22,10 @@ public class Dougdougclientclient implements ClientModInitializer, ModMenuApi {
 		// Proceed with mild caution.
 		LOGGER.info("Hello Gurked world!");
 		config = ModConfig.load();
+		Keybinds.register();
 
 		ModuleManager.initializeModules();
 		System.out.println("DougDougClientClient has been initialized on the client side!");
 	}
+
 }

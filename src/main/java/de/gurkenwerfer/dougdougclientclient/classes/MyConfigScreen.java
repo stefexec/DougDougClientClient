@@ -13,20 +13,21 @@ public class MyConfigScreen {
                 .setTitle(Text.translatable("title.dougdougclientclient.config"));
 
         for (String moduleName : ModuleManager.getModuleNames()) {
-            boolean isEnabled = ModConfig.load().isModuleEnabled(moduleName);
-            String module = moduleName; // Capture moduleName in a local variable
+            boolean isEnabled = config.isModuleEnabled(moduleName);
+            System.out.println("Module " + moduleName + " is enabled: " + isEnabled);
 
-            //create actual button
+            // Create actual button
             builder.getOrCreateCategory(Text.of("Modules"))
-                    .addEntry(builder.entryBuilder().startBooleanToggle(Text.of(module), isEnabled)
+                    .addEntry(builder.entryBuilder().startBooleanToggle(Text.of(moduleName), isEnabled)
                             .setDefaultValue(false)
                             .setSaveConsumer(enabled -> {
+                                System.out.println("Setting module " + moduleName + " to " + enabled);
                                 if (enabled) {
-                                    config.setModuleEnabled(module);
+                                    config.setModuleEnabled(moduleName);
                                 } else {
-                                    config.setModuleDisabled(module);
+                                    config.setModuleDisabled(moduleName);
                                 }
-                                config.save(); // Save config after modifying module state
+                                config.save();
                             })
                             .build());
         }
