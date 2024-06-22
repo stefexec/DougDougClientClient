@@ -30,7 +30,7 @@ public class Keybinds {
                     "Toggle: " + moduleName.toLowerCase(),
                     InputUtil.Type.KEYSYM,
                     key,
-                    "DougDoug ClientClient Keybinds"
+                    "category.dougdougclientclient.keybindings"
             ));
             keyBindings.put(moduleName, keyBinding);
             System.out.println("Registered keybind for module: " + moduleName);

@@ -22,9 +22,9 @@ public class Dougdougclientclient implements ClientModInitializer, ModMenuApi {
 		// Proceed with mild caution.
 		LOGGER.info("Hello Gurked world!");
 		config = ModConfig.load();
-		Keybinds.register();
-
 		ModuleManager.initializeModules();
+
+		Keybinds.register();
 		System.out.println("DougDougClientClient has been initialized on the client side!");
 	}
 

@@ -7,7 +7,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 
-public class ModuleA implements Module {
+public class Gurkfly implements Module {
     private boolean enabled = true; // Default to enabled
 
     // THIS SHIT NEED ITS OWN SECTION IN THE MOD MENU
