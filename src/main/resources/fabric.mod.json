@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "dougdougclientclient",
+	"version": "${version}",
+	"name": "dougdougclientclient",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Gurkenwerfer_"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/dougdougclientclient/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"de.gurkenwerfer.dougdougclientclient.Dougdougclientclient"
+		],
+		"modmenu": [
+			"de.gurkenwerfer.dougdougclientclient.classes.ModMenuIntegration"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*",
+		"modmenu": ">=7.1.0"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
