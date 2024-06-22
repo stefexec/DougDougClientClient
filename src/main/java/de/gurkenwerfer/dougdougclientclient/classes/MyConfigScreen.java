@@ -24,8 +24,10 @@ public class MyConfigScreen {
                                 System.out.println("Setting module " + moduleName + " to " + enabled);
                                 if (enabled) {
                                     config.setModuleEnabled(moduleName);
+                                    ModuleManager.enableModule(moduleName);
                                 } else {
                                     config.setModuleDisabled(moduleName);
+                                    ModuleManager.disableModule(moduleName);
                                 }
                                 config.save();
                             })

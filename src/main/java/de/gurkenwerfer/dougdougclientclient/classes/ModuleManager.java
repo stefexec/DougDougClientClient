@@ -36,6 +36,24 @@ public class ModuleManager {
         return moduleMap.keySet().toArray(new String[0]);
     }
 
+    // Method to enable a module
+    public static void enableModule(String moduleName) {
+        Module module = moduleMap.get(moduleName);
+        if (module != null && !module.isEnabled()) {
+            module.setEnabled(true);
+            module.initialize();
+        }
+    }
+
+    // Method to disable a module
+    public static void disableModule(String moduleName) {
+        Module module = moduleMap.get(moduleName);
+        if (module != null && module.isEnabled()) {
+            module.terminate();
+            module.setEnabled(false);
+        }
+    }
+
     public static void saveConfig() {
         if (config != null) {
             config.save();
