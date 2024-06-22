@@ -25,7 +25,7 @@ public class Dougdougclientclient implements ClientModInitializer, ModMenuApi {
 		ModuleManager.initializeModules();
 
 		Keybinds.register();
-		System.out.println("DougDougClientClient has been initialized on the client side!");
+		LOGGER.info("DougDougClientClient has been initialized on the client side!");
 	}
 
 }

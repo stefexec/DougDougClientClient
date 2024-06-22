@@ -2,7 +2,6 @@ package de.gurkenwerfer.dougdougclientclient.classes;
 
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 
 public class MyConfigScreen {

@@ -5,11 +5,12 @@
 	"name": "dougdougclientclient",
 	"description": "This is an example description! Tell everyone what your mod is about!",
 	"authors": [
-		"Gurkenwerfer_"
+		"Gurkenwerfer_",
+		"MessyPrincy"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/stefexec",
+		"sources": "https://github.com/stefexec/DougDougClientClient"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/dougdougclientclient/icon.png",

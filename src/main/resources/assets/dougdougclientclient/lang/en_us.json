@@ -1,6 +1,7 @@
 {
-  "title.dougdougclientclient.config": "Example Mod Configuration",
+  "title.dougdougclientclient.config": "DougDoug ClientClient",
   "category.dougdougclientclient.general": "General Settings",
-  "option.dougdougclientclient.enabled": "Enable Example Feature",
-  "category.dougdougclientclient.keybindings": "DougDoug ClientClient Keybinds"
+  "option.dougdougclientclient.enabled": "Enable Feature",
+  "category.dougdougclientclient.keybindings": "DougDoug ClientClient Keybinds",
+  "key.dougdougclientclient.open_config": "Open Client Mod Menu"
 }

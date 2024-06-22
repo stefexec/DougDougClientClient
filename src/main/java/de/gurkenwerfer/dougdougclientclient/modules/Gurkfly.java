@@ -8,7 +8,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 
 public class Gurkfly implements Module {
-    private boolean enabled = true; // Default to enabled
+    private boolean enabled = false; // Default to enabled
 
     // THIS SHIT NEED ITS OWN SECTION IN THE MOD MENU
     // WILL WORK ON CREATING TABS FOR DIFFERENT MODULES NEXT
