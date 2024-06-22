@@ -17,7 +17,7 @@ public class ModuleManager {
         config = ModConfig.load();
 
         // Example: Initialize modules and their default states
-        moduleMap.put("ModuleA", new ModuleA());
+        moduleMap.put("Gurkfly", new ModuleA());
         moduleMap.put("ModuleB", new ModuleB());
         moduleMap.put("ModuleC", new ModuleC());
 
@@ -54,9 +54,9 @@ public class ModuleManager {
         }
     }
 
-    public static void saveConfig() {
-        if (config != null) {
-            config.save();
-        }
+    public static boolean isModuleEnabled(String moduleName) {
+        Module module = moduleMap.get(moduleName);
+        return module != null && module.isEnabled();
     }
+
 }
