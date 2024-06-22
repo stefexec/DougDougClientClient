@@ -23,17 +23,21 @@ public class ModConfig {
     public static ModConfig load() {
         if (CONFIG_FILE.exists()) {
             try (FileReader reader = new FileReader(CONFIG_FILE)) {
-                return GSON.fromJson(reader, ModConfig.class);
+                ModConfig config = GSON.fromJson(reader, ModConfig.class);
+                System.out.println("Config loaded: " + config.getModuleEnabledMap());
+                return config;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        System.out.println("Creating new config instance.");
         return new ModConfig();
     }
 
     public void save() {
         try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
             GSON.toJson(this, writer);
+            System.out.println("Config saved: " + this.getModuleEnabledMap());
         } catch (IOException e) {
             e.printStackTrace();
         }
