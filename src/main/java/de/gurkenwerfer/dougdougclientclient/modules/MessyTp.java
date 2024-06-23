@@ -2,6 +2,7 @@ package de.gurkenwerfer.dougdougclientclient.modules;
 
 import de.gurkenwerfer.dougdougclientclient.classes.Module;
 import de.gurkenwerfer.dougdougclientclient.classes.ModuleManager;
+import de.gurkenwerfer.dougdougclientclient.mixin.ClientConnectionAccessor;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.text.Text;
@@ -45,67 +46,83 @@ public class MessyTp implements Module {
         this.enabled = enabled;
     }
 
-    private void onStartTick(MinecraftClient client) {
-        if (client.player != null && isEnabled()) {
+    private void onStartTick(MinecraftClient mc) {
+        if (mc.player != null && isEnabled()) {
             int teleportDistance;
-            if (client.options.sneakKey.isPressed() && blockBelowPos != null) {
+
+            if (mc.options.sneakKey.isPressed() && blockBelowPos != null) {
                 y = blockBelowPos.down().getY();
                 teleportDistance = playerPos.getY() - y;
-                client.player.sendMessage(Text.of("Air block is " + teleportDistance + " below you"));
-                for (int i = 0; i < 20; i++) {
-                    PlayerMoveC2SPacket currentPosition;
-                    currentPosition = new PlayerMoveC2SPacket.Full(
-                            client.player.getX(),
-                            client.player.getY(),
-                            client.player.getZ(),
-                            client.player.getYaw(0),
-                            client.player.getPitch(0),
-                            client.player.isOnGround());
-                    Objects.requireNonNull(client.getNetworkHandler()).sendPacket(currentPosition);
+                // good o' paperclip
+                int packetsRequired = (int) Math.ceil(Math.abs(teleportDistance / 10));
+                mc.player.sendMessage(Text.of("Air block is " + teleportDistance + " below you"));
+
+                for (int packetNum = 0; packetNum < (packetsRequired - 1); packetNum++) {
+
+                    PlayerMoveC2SPacket currentPosition  = new PlayerMoveC2SPacket.Full(
+                            mc.player.getX(),
+                            mc.player.getY(),
+                            mc.player.getZ(),
+                            mc.player.getYaw(0),
+                            mc.player.getPitch(0),
+                            true);
+
+                    ((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(currentPosition, null);
                 }
-                PlayerMoveC2SPacket newPosition;
-                newPosition = new PlayerMoveC2SPacket.Full(
-                        client.player.getX(),
-                        client.player.getY() - teleportDistance,
-                        client.player.getZ(),
-                        client.player.getYaw(0),
-                        client.player.getPitch(0),
-                        client.player.isOnGround());
-                Objects.requireNonNull(client.getNetworkHandler()).sendPacket(newPosition);
-                client.player.setPosition(client.player.getX(), client.player.getY() - teleportDistance, client.player.getZ());
+
+                PlayerMoveC2SPacket newPosition = new PlayerMoveC2SPacket.Full(
+                        mc.player.getX(),
+                        mc.player.getY() - teleportDistance,
+                        mc.player.getZ(),
+                        mc.player.getYaw(0),
+                        mc.player.getPitch(0),
+                        true);
+
+                ((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(newPosition, null);
+                mc.player.setPosition(mc.player.getX(), mc.player.getY() - teleportDistance, mc.player.getZ());
+
                 ModuleManager.disableModule("MessyTp");
-            } else if (!client.options.sneakKey.isPressed() && blockAbovePos != null) {
+
+            } else if (!mc.options.sneakKey.isPressed() && blockAbovePos != null) {
+
                 y = blockAbovePos.up().getY();
                 teleportDistance = playerPos.getY() - y;
                 teleportDistance = -teleportDistance;
-                client.player.sendMessage(Text.of("Air block is " + teleportDistance + " above you"));
-                for (int i = 0; i < 20; i++) {
-                    PlayerMoveC2SPacket currentPosition;
-                    currentPosition = new PlayerMoveC2SPacket.Full(
-                            client.player.getX(),
-                            client.player.getY(),
-                            client.player.getZ(),
-                            client.player.getYaw(0),
-                            client.player.getPitch(0),
-                            client.player.isOnGround());
-                    Objects.requireNonNull(client.getNetworkHandler()).sendPacket(currentPosition);
-                }
-                PlayerMoveC2SPacket newPosition;
-                newPosition = new PlayerMoveC2SPacket.Full(
-                        client.player.getX(),
-                        client.player.getY() - teleportDistance,
-                        client.player.getZ(),
-                        client.player.getYaw(0),
-                        client.player.getPitch(0),
-                        client.player.isOnGround());
-                Objects.requireNonNull(client.getNetworkHandler()).sendPacket(newPosition);
-                client.player.setPosition(client.player.getX(), client.player.getY() + teleportDistance, client.player.getZ());
-                ModuleManager.disableModule("MessyTp");
-            } else {
-                client.player.sendMessage(Text.of("Could not find a suitable teleportation spot"));
-                ModuleManager.disableModule("MessyTp");
-            }
+                // good o' paperclip
+                int packetsRequired = (int) Math.ceil(Math.abs(teleportDistance / 10));
+                mc.player.sendMessage(Text.of("Air block is " + teleportDistance + " above you"));
 
+                for (int packetNum = 0; packetNum < (packetsRequired - 1); packetNum++) {
+                    PlayerMoveC2SPacket currentPosition  = new PlayerMoveC2SPacket.Full(
+                            mc.player.getX(),
+                            mc.player.getY(),
+                            mc.player.getZ(),
+                            mc.player.getYaw(0),
+                            mc.player.getPitch(0),
+                            true);
+
+                    ((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(currentPosition, null);
+                }
+
+                PlayerMoveC2SPacket newPosition = new PlayerMoveC2SPacket.Full(
+                        mc.player.getX(),
+                        mc.player.getY() - teleportDistance + 1,
+                        mc.player.getZ(),
+                        mc.player.getYaw(0),
+                        mc.player.getPitch(0),
+                        true);
+
+                ((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(newPosition, null);
+                mc.player.setPosition(mc.player.getX(), mc.player.getY() + teleportDistance, mc.player.getZ());
+
+                ModuleManager.disableModule("MessyTp");
+
+            } else {
+
+                mc.player.sendMessage(Text.of("Could not find a suitable teleportation spot"));
+                ModuleManager.disableModule("MessyTp");
+
+            }
         }
     }
 

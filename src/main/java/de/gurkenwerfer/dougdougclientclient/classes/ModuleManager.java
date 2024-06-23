@@ -21,7 +21,7 @@ public class ModuleManager {
         // Example: Initialize modules and their default states
         moduleMap.put("Gurkfly", new Gurkfly());
         moduleMap.put("Gurkreach", new Gurkreach());
-        moduleMap.put("MessyTP", new MessyTp());
+        moduleMap.put("MessyTp", new MessyTp());
 
         // Add more modules as needed
         for (Map.Entry<String, Module> entry : moduleMap.entrySet()) {
