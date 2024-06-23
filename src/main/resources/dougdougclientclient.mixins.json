@@ -1,9 +1,11 @@
 {
 	"required": true,
-	"package": "de.gurkenwerfer.dougdougclientclient",
+	"package": "de.gurkenwerfer.dougdougclientclient.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"mixin.ExampleMixin"
+		"ClientPlayerInteractionManagerMixin",
+		"ClientConnectionAccessor",
+		"GameRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

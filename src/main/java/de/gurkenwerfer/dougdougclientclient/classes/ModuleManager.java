@@ -1,8 +1,10 @@
 package de.gurkenwerfer.dougdougclientclient.classes;
 
 import de.gurkenwerfer.dougdougclientclient.modules.Gurkfly;
+import de.gurkenwerfer.dougdougclientclient.modules.Gurkreach;
 import de.gurkenwerfer.dougdougclientclient.modules.MessyTp;
-import de.gurkenwerfer.dougdougclientclient.modules.ModuleC;
+
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +20,8 @@ public class ModuleManager {
 
         // Example: Initialize modules and their default states
         moduleMap.put("Gurkfly", new Gurkfly());
+        moduleMap.put("Gurkreach", new Gurkreach());
         moduleMap.put("MessyTp", new MessyTp());
-        moduleMap.put("ModuleC", new ModuleC());
 
         // Add more modules as needed
         for (Map.Entry<String, Module> entry : moduleMap.entrySet()) {
