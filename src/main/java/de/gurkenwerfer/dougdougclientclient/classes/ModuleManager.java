@@ -1,7 +1,7 @@
 package de.gurkenwerfer.dougdougclientclient.classes;
 
 import de.gurkenwerfer.dougdougclientclient.modules.Gurkfly;
-import de.gurkenwerfer.dougdougclientclient.modules.ModuleB;
+import de.gurkenwerfer.dougdougclientclient.modules.Gurkreach;
 import de.gurkenwerfer.dougdougclientclient.modules.ModuleC;
 
 import java.util.HashMap;
@@ -18,7 +18,7 @@ public class ModuleManager {
 
         // Example: Initialize modules and their default states
         moduleMap.put("Gurkfly", new Gurkfly());
-        moduleMap.put("ModuleB", new ModuleB());
+        moduleMap.put("Gurkreach", new Gurkreach());
         moduleMap.put("ModuleC", new ModuleC());
 
         // Add more modules as needed
