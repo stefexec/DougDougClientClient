@@ -17,8 +17,10 @@ public class CrosshairChatter implements Module {
     // The listener method
     private void onStartTick(MinecraftClient mc) {
         // Your code to run at the start of each client tick
-        if (mc.player != null) {
-            mc.player.sendMessage(Text.of(mc.targetedEntity.getEntityName()), false);
+        if(mc.player != null) {
+            if (mc.targetedEntity != null) {
+                mc.player.sendMessage(mc.targetedEntity.getName(), false);
+            }
         }
     }
 
