@@ -2,7 +2,7 @@ package de.gurkenwerfer.dougdougclientclient.modules;
 
 import de.gurkenwerfer.dougdougclientclient.classes.Module;
 
-public class ModuleC implements Module {
+public class ModuleTemplate implements Module {
     private boolean enabled = true; // Default to enabled
 
     @Override

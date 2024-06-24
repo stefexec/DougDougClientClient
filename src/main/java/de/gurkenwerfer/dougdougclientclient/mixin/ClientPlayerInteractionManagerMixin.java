@@ -37,6 +37,8 @@ public abstract class ClientPlayerInteractionManagerMixin {
 	@Shadow
 	protected abstract void syncSelectedSlot();
 
+	@Shadow public abstract float getReachDistance();
+
 	@Inject(method = "getReachDistance", at = @At("HEAD"), cancellable = true)
 	private void onGetReachDistance(CallbackInfoReturnable<Float> info) {
 		if (ModuleManager.isModuleEnabled("Gurkreach")) {
@@ -67,7 +69,10 @@ public abstract class ClientPlayerInteractionManagerMixin {
 	@Inject(method = "attackEntity", at = @At("HEAD"), cancellable = true)
 	private void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo info) {
 		MinecraftClient mc = MinecraftClient.getInstance();
-		mc.player.sendMessage(Text.of("ATTACK!"));
+		mc.player.sendMessage(Text.of("gurkReach.getReach()" + gurkReach.getReach()));
+		mc.player.sendMessage(Text.of("getReachDistance Mixin: " + getReachDistance()));
+        mc.player.sendMessage(Text.of(String.valueOf(mc.targetedEntity.getName())));
+		mc.player.sendMessage(target.getName());
 
 		if (ModuleManager.isModuleEnabled("Gurkreach")) {
 
