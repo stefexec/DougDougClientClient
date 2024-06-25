@@ -1,5 +1,6 @@
 package de.gurkenwerfer.dougdougclientclient.classes;
 
+import de.gurkenwerfer.dougdougclientclient.modules.CrosshairChatter;
 import de.gurkenwerfer.dougdougclientclient.modules.Gurkfly;
 import de.gurkenwerfer.dougdougclientclient.modules.Gurkreach;
 import de.gurkenwerfer.dougdougclientclient.modules.MessyTp;
@@ -22,6 +23,7 @@ public class ModuleManager {
         moduleMap.put("Gurkfly", new Gurkfly());
         moduleMap.put("Gurkreach", new Gurkreach());
         moduleMap.put("MessyTp", new MessyTp());
+        moduleMap.put("CrosshairChatter", new CrosshairChatter());
 
         // Add more modules as needed
         for (Map.Entry<String, Module> entry : moduleMap.entrySet()) {

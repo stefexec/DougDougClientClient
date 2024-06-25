@@ -28,6 +28,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Objects;
+
 @Mixin(ClientPlayerInteractionManager.class)
 public abstract class ClientPlayerInteractionManagerMixin {
 
@@ -35,13 +37,14 @@ public abstract class ClientPlayerInteractionManagerMixin {
 	Gurkreach gurkReach = new Gurkreach();
 
 	@Shadow
-	protected abstract void syncSelectedSlot();
+	protected abstract void syncSelectedSlot(); // Imma be honest, I don't know what this does
+
+	@Shadow public abstract float getReachDistance();
 
 	@Inject(method = "getReachDistance", at = @At("HEAD"), cancellable = true)
 	private void onGetReachDistance(CallbackInfoReturnable<Float> info) {
 		if (ModuleManager.isModuleEnabled("Gurkreach")) {
 			info.setReturnValue(gurkReach.getReach());
-			///System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXX" + gurkReach.getReach());
 		} else {
 			info.setReturnValue(5.0f);
 		}
@@ -58,7 +61,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
 		BlockState state = mc.world.getBlockState(blockPos);
 		if (state.calcBlockBreakingDelta(mc.player, mc.world, blockPos) > 0.5f) {
 			mc.world.breakBlock(blockPos, true, mc.player);
-			((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, blockPos, direction), null);
+			((ClientConnectionAccessor) Objects.requireNonNull(mc.getNetworkHandler()).getConnection())._send(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, blockPos, direction), null);
 			((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, blockPos, direction), null);
 			info.setReturnValue(true);
 		}
@@ -67,11 +70,10 @@ public abstract class ClientPlayerInteractionManagerMixin {
 	@Inject(method = "attackEntity", at = @At("HEAD"), cancellable = true)
 	private void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo info) {
 		MinecraftClient mc = MinecraftClient.getInstance();
-		mc.player.sendMessage(Text.of("ATTACK!"));
 
 		if (ModuleManager.isModuleEnabled("Gurkreach")) {
 
-			if (target == null) return;
+			assert mc.targetedEntity != null;
 			Vec3d oldPos = player.getPos();
 			Vec3d newPos = target.getPos();
 
@@ -79,8 +81,8 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
 			teleportFromTo(MinecraftClient.getInstance(), oldPos, newPos);
 
-			Packet<?> packet = PlayerInteractEntityC2SPacket.attack(target, mc.player.isSneaking());
-			((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(packet, null);
+			Packet<?> packet = PlayerInteractEntityC2SPacket.attack(target, false);
+			((ClientConnectionAccessor) Objects.requireNonNull(mc.getNetworkHandler()).getConnection())._send(packet, null);
 
 			teleportFromTo(MinecraftClient.getInstance(), newPos, oldPos);
 		}
@@ -99,7 +101,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
 			teleportFromTo(MinecraftClient.getInstance(), oldPos, newPos);
 
 			Packet<?> packet = new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, hitResult, 0);
-			((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(packet, null);
+			((ClientConnectionAccessor) Objects.requireNonNull(mc.getNetworkHandler()).getConnection())._send(packet, null);
 
 			teleportFromTo(MinecraftClient.getInstance(), newPos, oldPos);
 
@@ -109,10 +111,10 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
 	@Unique
 	void teleportFromTo(MinecraftClient client, Vec3d from, Vec3d to) {
+		MinecraftClient mc = MinecraftClient.getInstance();
+		assert mc.player != null;
 		double maxDist = 7;
 		double targetDist = Math.ceil(from.distanceTo(to) / maxDist);
-
-		MinecraftClient mc = MinecraftClient.getInstance();
 
 		for (int i = 1; i <= targetDist; i++) {
 
@@ -128,7 +130,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
 			);
 
 			// Send packet immediately using accessor
-			((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(packet, null);
+			((ClientConnectionAccessor) Objects.requireNonNull(mc.getNetworkHandler()).getConnection())._send(packet, null);
 
 		}
 	}
