@@ -71,7 +71,7 @@ public abstract class GameRendererMixin {
 
  */
 
-// go big or go play vanilla
+// go big or go play vanilla  (TO BE IMPROVED)
 @Mixin(value = GameRenderer.class, priority = 1010)
 public class GameRendererMixin {
 
@@ -83,14 +83,14 @@ public class GameRendererMixin {
             if (client.world != null) {
                 client.getProfiler().push("pick");
                 client.targetedEntity = null;
-                double d = 180;
+                double d = 120;
                 client.crosshairTarget = entity.raycast(d, tickDelta, false);
                 Vec3d vec3d = entity.getCameraPosVec(tickDelta);
                 boolean bl = false;
                 int i = 3;
                 double e = d;
                 if (client.interactionManager.hasExtendedReach()) {
-                    e = 180.0; // Replacing 6.0 with 120.0
+                    e = 120.0; // Replacing 6.0 with 120.0
                     d = e;
                 } else {
                     if (d > 3.0) {
@@ -114,7 +114,7 @@ public class GameRendererMixin {
                     Entity entity2 = entityHitResult.getEntity();
                     Vec3d vec3d4 = entityHitResult.getPos();
                     double g = vec3d.squaredDistanceTo(vec3d4);
-                    if (bl && g > 180.0) { // Replacing 9.0 with 120.0
+                    if (bl && g > 14400.0) { // Replacing 9.0 with 14400.0
                         client.crosshairTarget = BlockHitResult.createMissed(vec3d4, Direction.getFacing(vec3d2.x, vec3d2.y, vec3d2.z), BlockPos.ofFloored(vec3d4));
                     } else if (g < e || client.crosshairTarget == null) {
                         client.crosshairTarget = entityHitResult;
