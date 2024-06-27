@@ -9,15 +9,13 @@ import net.minecraft.text.Text;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.Objects;
-
 
 public class MessyTp implements Module {
     private boolean enabled = false;
 
     private static final int MIN_Y = -60;
     private static final int MAX_Y = 320;
-    MinecraftClient client = MinecraftClient.getInstance();
+    MinecraftClient mc = MinecraftClient.getInstance();
 
     BlockPos playerPos;
     int y;
@@ -26,18 +24,18 @@ public class MessyTp implements Module {
 
     @Override
     public void initialize() {
-        if (client.player != null) {
-            playerPos = client.player.getBlockPos();
+        if (mc.player != null) {
+            playerPos = mc.player.getBlockPos();
             y = playerPos.getY();
             blockBelowPos = findAirBelowPlayer(playerPos);
             blockAbovePos = findAirAbovePlayer(playerPos);
-            ClientTickEvents.START_CLIENT_TICK.register(this::onStartTick);
+            ClientTickEvents.END_CLIENT_TICK.register(this::onEndTick);
         }
     }
 
     @Override
     public void terminate() {
-        assert client.player != null;
+        assert mc.player != null;
     }
 
     @Override
@@ -50,7 +48,7 @@ public class MessyTp implements Module {
         this.enabled = enabled;
     }
 
-    private void onStartTick(MinecraftClient mc) {
+    private void onEndTick(MinecraftClient mc) {
         if (mc.player != null && isEnabled()) {
             int teleportDistance;
 
@@ -60,20 +58,21 @@ public class MessyTp implements Module {
                 mc.player.sendMessage(Text.of("Air block is " + teleportDistance + " below you"));
 
             } else if (!mc.options.sneakKey.isPressed() && blockAbovePos != null) {
-
-                y = blockAbovePos.up().getY();
-                teleportDistance = playerPos.getY() - y;
-                mc.player.sendMessage(Text.of("Air block is " + -teleportDistance + " above you"));
+                y = blockAbovePos.down().getY();
+                teleportDistance = y - playerPos.getY();
+                mc.player.sendMessage(Text.of("Air block is " + teleportDistance + " above you"));
             } else {
-
                 mc.player.sendMessage(Text.of("Could not find a suitable teleportation spot"));
                 teleportDistance = 0;
-
             }
-            int packetsRequired = (int) Math.ceil(Math.abs(-(teleportDistance) / 10));
+
+            int packetsRequired = (int) Math.ceil(Math.abs(teleportDistance / 10));
+            if (mc.options.sneakKey.isPressed()) {
+                teleportDistance = -teleportDistance;
+            }
             for (int packetNum = 0; packetNum < (packetsRequired - 1); packetNum++) {
 
-                PlayerMoveC2SPacket currentPosition  = new PlayerMoveC2SPacket.Full(
+                PlayerMoveC2SPacket currentPosition = new PlayerMoveC2SPacket.Full(
                         mc.player.getX(),
                         mc.player.getY(),
                         mc.player.getZ(),
@@ -82,50 +81,49 @@ public class MessyTp implements Module {
                         true);
 
                 ((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(currentPosition, null);
+                //System.out.println("Sent packet " + packetNum + " of " + packetsRequired + " packets");
             }
 
             PlayerMoveC2SPacket newPosition = new PlayerMoveC2SPacket.Full(
-                    mc.player.getX(),
-                    mc.player.getY() - teleportDistance,
-                    mc.player.getZ(),
+                    Math.floor(mc.player.getX()) + 0.500,
+                    mc.player.getY() + teleportDistance,
+                    Math.floor(mc.player.getZ()) + 0.500,
                     mc.player.getYaw(0),
                     mc.player.getPitch(0),
                     true);
-
+            mc.player.setPosition(Math.floor(mc.player.getX()) + 0.500, mc.player.getY() + teleportDistance, Math.floor(mc.player.getZ()) + 0.500);
             ((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(newPosition, null);
-            mc.player.setPosition(mc.player.getX(), mc.player.getY() - teleportDistance, mc.player.getZ());
-
             ModuleManager.disableModule("MessyTp");
         }
     }
 
     public BlockPos findAirBelowPlayer(BlockPos playerPos) {
-        assert client.world != null;
+        assert mc.world != null;
         BlockPos currentPos = playerPos.down();
         BlockPos lastAirBlock2 = null;
 
         while (currentPos.getY() > MIN_Y) {
-            if (client.world.getBlockState(currentPos).isAir() && client.world.getBlockState(currentPos.down()).isAir() && !client.world.getBlockState(currentPos.down().down()).isAir()) {
+            if (mc.world.getBlockState(currentPos).isAir() && mc.world.getBlockState(currentPos.down()).isAir() && !mc.world.getBlockState(currentPos.down().down()).isAir()) {
                 lastAirBlock2 = currentPos;
-                currentPos = currentPos.down(-MIN_Y);
+                currentPos = currentPos.down(1000);
             }
             currentPos = currentPos.down();
         }
-        return  lastAirBlock2;
+        return lastAirBlock2;
     }
 
     public BlockPos findAirAbovePlayer(BlockPos playerPos) {
-        assert client.world != null;
+        assert mc.world != null;
         BlockPos currentPos = playerPos.up(3); //Need to check three blocks up to prevent false detections such as standing on redstone
         BlockPos lastAirBlock2 = null;
 
         while (currentPos.getY() < MAX_Y) {
-            if (client.world.getBlockState(currentPos).isAir() && client.world.getBlockState(currentPos.down()).isAir() && !client.world.getBlockState(currentPos.down().down()).isAir()) {
+            if (mc.world.getBlockState(currentPos).isAir() && mc.world.getBlockState(currentPos.down()).isAir() && !mc.world.getBlockState(currentPos.down().down()).isAir()) {
                 lastAirBlock2 = currentPos;
-                currentPos = currentPos.up(MAX_Y);
+                currentPos = currentPos.up(1000);
             }
             currentPos = currentPos.up();
         }
-        return  lastAirBlock2;
+        return lastAirBlock2;
     }
 }
