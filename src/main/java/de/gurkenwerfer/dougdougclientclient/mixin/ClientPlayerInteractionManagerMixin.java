@@ -49,7 +49,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
 	@Inject(method = "hasExtendedReach", at = @At("HEAD"), cancellable = true)
 	private void onHasExtendedReach(CallbackInfoReturnable<Boolean> info) {
-		if (ModuleManager.isModuleEnabled("Gurkreach")) info.setReturnValue(false);
+		if (ModuleManager.isModuleEnabled("Gurkreach")) info.setReturnValue(true);
 	}
 
 	/*

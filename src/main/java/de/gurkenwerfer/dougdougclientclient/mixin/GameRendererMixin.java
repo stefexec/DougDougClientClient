@@ -83,7 +83,10 @@ public class GameRendererMixin {
             if (client.world != null) {
                 client.getProfiler().push("pick");
                 client.targetedEntity = null;
-                double d = 120;
+                double d = 6;
+                if (ModuleManager.isModuleEnabled("Gurkreach")) {
+                    d = 120;
+                }
                 client.crosshairTarget = entity.raycast(d, tickDelta, false);
                 Vec3d vec3d = entity.getCameraPosVec(tickDelta);
                 boolean bl = false;
