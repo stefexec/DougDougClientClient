@@ -36,9 +36,6 @@ public abstract class ClientPlayerInteractionManagerMixin {
 	@Unique
 	Gurkreach gurkReach = new Gurkreach();
 
-	@Shadow
-	protected abstract void syncSelectedSlot(); // Imma be honest, I don't know what this does
-
 	@Shadow public abstract float getReachDistance();
 
 	@Inject(method = "getReachDistance", at = @At("HEAD"), cancellable = true)
@@ -55,19 +52,30 @@ public abstract class ClientPlayerInteractionManagerMixin {
 		if (ModuleManager.isModuleEnabled("Gurkreach")) info.setReturnValue(false);
 	}
 
+	/*
+
+	PRETTY MUCH USELESS TBH
+
 	@Inject(method = "attackBlock", at = @At("HEAD"), cancellable = true)
 	private void onAttackBlock(BlockPos blockPos, Direction direction, CallbackInfoReturnable<Boolean> info) {
 		MinecraftClient mc = MinecraftClient.getInstance();
-		BlockState state = mc.world.getBlockState(blockPos);
-		if (state.calcBlockBreakingDelta(mc.player, mc.world, blockPos) > 0.5f) {
-			mc.world.breakBlock(blockPos, true, mc.player);
-			((ClientConnectionAccessor) Objects.requireNonNull(mc.getNetworkHandler()).getConnection())._send(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, blockPos, direction), null);
-			((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, blockPos, direction), null);
-			info.setReturnValue(true);
+		if (ModuleManager.isModuleEnabled("Gurkreach")) {
+			if (mc.world != null) {
+				BlockState state = mc.world.getBlockState(blockPos);
+				if (state.calcBlockBreakingDelta(mc.player, mc.world, blockPos) > 0.5f) {
+					mc.world.breakBlock(blockPos, true, mc.player);
+					if (mc.getNetworkHandler() != null && mc.getNetworkHandler().getConnection() != null) {
+						((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, blockPos, direction), null);
+						((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, blockPos, direction), null);
+					}
+					info.setReturnValue(true);
+				}
+			}
 		}
 	}
 
-	@Inject(method = "attackEntity", at = @At("HEAD"), cancellable = true)
+	 */
+	@Inject(method = "attackEntity", at = @At("HEAD"))
 	private void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo info) {
 		MinecraftClient mc = MinecraftClient.getInstance();
 
@@ -76,14 +84,16 @@ public abstract class ClientPlayerInteractionManagerMixin {
 			assert mc.targetedEntity != null;
 			Vec3d oldPos = player.getPos();
 			Vec3d newPos = target.getPos();
-
-			mc.player.sendMessage(Text.of("pos: " + oldPos + newPos));
+			if (mc.player != null) {
+				mc.player.sendMessage(Text.of("pos: " + oldPos + newPos));
+			}
 
 			teleportFromTo(MinecraftClient.getInstance(), oldPos, newPos);
 
 			Packet<?> packet = PlayerInteractEntityC2SPacket.attack(target, false);
-			((ClientConnectionAccessor) Objects.requireNonNull(mc.getNetworkHandler()).getConnection())._send(packet, null);
-
+			if (mc.getNetworkHandler() != null && mc.getNetworkHandler().getConnection() != null) {
+				((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(packet, null);
+			}
 			teleportFromTo(MinecraftClient.getInstance(), newPos, oldPos);
 		}
 	}
@@ -101,7 +111,10 @@ public abstract class ClientPlayerInteractionManagerMixin {
 			teleportFromTo(MinecraftClient.getInstance(), oldPos, newPos);
 
 			Packet<?> packet = new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, hitResult, 0);
-			((ClientConnectionAccessor) Objects.requireNonNull(mc.getNetworkHandler()).getConnection())._send(packet, null);
+
+			if (mc.getNetworkHandler() != null && mc.getNetworkHandler().getConnection() != null) {
+				((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(packet, null);
+			}
 
 			teleportFromTo(MinecraftClient.getInstance(), newPos, oldPos);
 
@@ -130,6 +143,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
 			);
 
 			// Send packet immediately using accessor
+			// RIP sendImmediately
 			((ClientConnectionAccessor) Objects.requireNonNull(mc.getNetworkHandler()).getConnection())._send(packet, null);
 
 		}

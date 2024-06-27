@@ -15,23 +15,23 @@ public class Keybinds {
     private static KeyBinding openConfigKey;
 
     public static void register() {
-        openConfigKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+        openConfigKey = registerKeyBinding(
                 "key.dougdougclientclient.open_config",
                 InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_RIGHT_SHIFT, // You can change this to any key you prefer
+                GLFW.GLFW_KEY_RIGHT_SHIFT,
                 "category.dougdougclientclient.keybindings"
-        ));
+        );
 
-        // assign numpad keys to each module
+        // Assign numpad keys to each module
         int key = GLFW.GLFW_KEY_KP_1; // Start with the numpad 1 key
 
         for (String moduleName : ModuleManager.getModuleNames()) {
-            KeyBinding keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                    "Toggle: " + moduleName.toLowerCase(),
+            KeyBinding keyBinding = registerKeyBinding(
+                    "key.dougdougclientclient.toggle_" + moduleName.toLowerCase(),
                     InputUtil.Type.KEYSYM,
                     key,
                     "category.dougdougclientclient.keybindings"
-            ));
+            );
             keyBindings.put(moduleName, keyBinding);
             System.out.println("Registered keybind for module: " + moduleName);
             key++;
@@ -53,6 +53,16 @@ public class Keybinds {
                 }
             }
         });
+    }
+
+    private static KeyBinding registerKeyBinding(String id, InputUtil.Type type, int defaultKey, String category) {
+        KeyBinding keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                id,
+                type,
+                defaultKey,
+                category
+        ));
+        return keyBinding;
     }
 
     private static void toggleModule(String moduleName) {

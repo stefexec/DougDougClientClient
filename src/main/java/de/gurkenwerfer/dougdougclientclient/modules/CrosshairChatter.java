@@ -19,7 +19,7 @@ public class CrosshairChatter implements Module {
         // Your code to run at the start of each client tick
         if(mc.player != null) {
             if (mc.targetedEntity != null) {
-                mc.player.sendMessage(mc.targetedEntity.getName(), false);
+                //mc.player.sendMessage(mc.targetedEntity.getName(), false);
             }
         }
     }
