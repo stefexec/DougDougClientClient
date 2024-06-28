@@ -85,7 +85,7 @@ public class GameRendererMixin {
                 client.targetedEntity = null;
                 double d = 6;
                 if (ModuleManager.isModuleEnabled("Gurkreach")) {
-                    d = 120;
+                    d = 120; // only increase reach of block hit indicator when module is active
                 }
                 client.crosshairTarget = entity.raycast(d, tickDelta, false);
                 Vec3d vec3d = entity.getCameraPosVec(tickDelta);
