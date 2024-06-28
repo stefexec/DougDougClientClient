@@ -29,18 +29,6 @@ public class NoFall implements Module {
         }
     }
 
-    private void handlePlayerMovePacket(PlayerMoveC2SPacket packet, ClientPlayerEntity player) {
-        if (shouldModifyPacket(player)) {
-            // Use the mixin accessor to modify the packet
-            ((PlayerMoveC2SPacketAccessor) packet).setOnGround(true);
-        }
-    }
-
-    private boolean shouldModifyPacket(ClientPlayerEntity player) {
-        // Your conditions to check if the packet should be modified
-        return !player.getAbilities().creativeMode && player.getVelocity().y <= -0.5;
-    }
-
     @Override
     public void terminate() {
         if (mc.player != null) {

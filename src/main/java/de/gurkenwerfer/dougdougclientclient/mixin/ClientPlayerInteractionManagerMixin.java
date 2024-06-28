@@ -99,6 +99,10 @@ public abstract class ClientPlayerInteractionManagerMixin {
 		}
 	}
 
+	/*
+
+	DISABLED UNTIL TOGGLEABLE
+
 	@Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
 	public void interactBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
 
@@ -122,6 +126,8 @@ public abstract class ClientPlayerInteractionManagerMixin {
 			cir.setReturnValue(ActionResult.SUCCESS);
 		}
 	}
+
+	 */
 
 	@Unique
 	void teleportFromTo(MinecraftClient client, Vec3d from, Vec3d to) {

@@ -20,11 +20,9 @@ public class ClientPlayNetworkHandlerMixin {
     @Inject(method = "sendPacket*", at = @At("HEAD"))
     private void onSendPacket(Packet<?> packet, CallbackInfo ci) {
         MinecraftClient mc = MinecraftClient.getInstance();
-        //String p1 = ((ClientPlayNetworkHandler) (Object) this).getProfile().getId().toString();
-        // Your logic to modify the packet
         if (packet instanceof PlayerMoveC2SPacket) {
             if (mc.player != null && shouldModifyPacket(mc.player)) {
-                mc.player.sendMessage(Text.of("I'm falling!"));
+                //mc.player.sendMessage(Text.of("I'm falling!"));
                 ((PlayerMoveC2SPacketAccessor) packet).setOnGround(true);
             }
         }
@@ -33,7 +31,6 @@ public class ClientPlayNetworkHandlerMixin {
 
     @Unique
     private boolean shouldModifyPacket(ClientPlayerEntity player) {
-        // Your conditions to check if the packet should be modified
         return !player.getAbilities().creativeMode && player.getVelocity().y <= -0.5;
     }
 }
