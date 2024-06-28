@@ -19,8 +19,9 @@ public class NoFall implements Module {
 
     @Override
     public void terminate() {
-        System.out.println("ModuleC terminated!");
-        // Your module-specific termination code here
+        if (mc.player != null) {
+            mc.player.sendMessage(Text.of("NoFall disabled!"));
+        }
     }
 
     @Override
