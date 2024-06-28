@@ -48,7 +48,7 @@ public class Keybinds {
                     KeyBinding keyBinding = entry.getValue();
                     if (keyBinding.wasPressed()) {
                         System.out.println("Keybind was pressed for module: " + moduleName);
-                        toggleModule(moduleName);
+                        ModuleManager.toggleModule(moduleName);
                     }
                 }
             }
@@ -63,13 +63,5 @@ public class Keybinds {
                 category
         ));
         return keyBinding;
-    }
-
-    private static void toggleModule(String moduleName) {
-        if (ModuleManager.isModuleEnabled(moduleName)) {
-            ModuleManager.disableModule(moduleName);
-        } else {
-            ModuleManager.enableModule(moduleName);
-        }
     }
 }

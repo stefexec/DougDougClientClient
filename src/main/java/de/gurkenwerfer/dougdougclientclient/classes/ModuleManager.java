@@ -63,4 +63,12 @@ public class ModuleManager {
         return module != null && module.isEnabled();
     }
 
+    public static void toggleModule(String moduleName) {
+        if (ModuleManager.isModuleEnabled(moduleName)) {
+            ModuleManager.disableModule(moduleName);
+        } else {
+            ModuleManager.enableModule(moduleName);
+        }
+    }
+
 }

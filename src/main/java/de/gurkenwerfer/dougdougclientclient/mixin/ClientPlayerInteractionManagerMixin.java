@@ -75,6 +75,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
 	}
 
 	 */
+
 	@Inject(method = "attackEntity", at = @At("HEAD"))
 	private void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo info) {
 		MinecraftClient mc = MinecraftClient.getInstance();
@@ -141,11 +142,9 @@ public abstract class ClientPlayerInteractionManagerMixin {
 					z,
 					mc.player.isOnGround()
 			);
-
 			// Send packet immediately using accessor
 			// RIP sendImmediately
 			((ClientConnectionAccessor) Objects.requireNonNull(mc.getNetworkHandler()).getConnection())._send(packet, null);
-
 		}
 	}
 }
