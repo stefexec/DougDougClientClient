@@ -1,15 +1,15 @@
 {
-	"required": true,
-	"package": "de.gurkenwerfer.dougdougclientclient.mixin",
-	"compatibilityLevel": "JAVA_17",
-	"mixins": [
-		"ClientConnectionAccessor",
-		"ClientPlayerInteractionManagerMixin",
-		"GameRendererMixin",
-		"PlayerMoveC2SPacketAccessor",
-		"ServerPlayNetworkHandlerMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "package": "de.gurkenwerfer.dougdougclientclient.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "ClientConnectionAccessor",
+    "ClientPlayerInteractionManagerMixin",
+    "GameRendererMixin",
+    "PlayerMoveC2SPacketAccessor",
+    "ClientPlayNetworkHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }
