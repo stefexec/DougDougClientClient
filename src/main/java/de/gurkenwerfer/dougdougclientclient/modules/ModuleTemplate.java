@@ -7,13 +7,13 @@ public class ModuleTemplate implements Module {
 
     @Override
     public void initialize() {
-        System.out.println("ModuleC initialized!");
+        System.out.println("ModuleTemplate initialized!");
         // Your module-specific initialization code here
     }
 
     @Override
     public void terminate() {
-        System.out.println("ModuleC terminated!");
+        System.out.println("ModuleTemplate terminated!");
         // Your module-specific termination code here
     }
 

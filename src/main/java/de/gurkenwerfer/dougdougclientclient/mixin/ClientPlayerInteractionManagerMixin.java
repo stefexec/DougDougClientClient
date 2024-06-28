@@ -79,7 +79,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
 			assert mc.targetedEntity != null;
 			Vec3d oldPos = player.getPos();
 			Vec3d direction = target.getPos().subtract(oldPos).normalize();
-			double totalDist = oldPos.distanceTo(target.getPos()) - 5;
+			double totalDist = oldPos.distanceTo(target.getPos()) - 5; //5 is the default reach distance
 			Vec3d newPos = oldPos.add(direction.multiply(totalDist));
 
 			teleportFromTo(MinecraftClient.getInstance(), oldPos, newPos);

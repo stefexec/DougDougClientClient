@@ -15,13 +15,13 @@ public class Gurkreach implements Module {
 
     @Override
     public void initialize() {
-        System.out.println("ModuleB initialized!");
+        System.out.println("Gurkreach initialized!");
         mc.player.sendMessage(Text.of("Gurkreach enabled!"));
     }
 
     @Override
     public void terminate() {
-        System.out.println("ModuleB terminated!");
+        System.out.println("Gurkreach terminated!");
         mc.player.sendMessage(Text.of("Gurkreach disabled!"));
         // Your module-specific termination code here
     }
