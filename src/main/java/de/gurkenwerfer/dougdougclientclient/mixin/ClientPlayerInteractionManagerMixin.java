@@ -2,17 +2,13 @@ package de.gurkenwerfer.dougdougclientclient.mixin;
 
 import de.gurkenwerfer.dougdougclientclient.classes.ModuleManager;
 import de.gurkenwerfer.dougdougclientclient.modules.Gurkreach;
+import de.gurkenwerfer.dougdougclientclient.utils.PacketHelper;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 
-import static de.gurkenwerfer.dougdougclientclient.utils.PacketHelper.teleportFromTo;
 
 @Mixin(ClientPlayerInteractionManager.class)
 public abstract class ClientPlayerInteractionManagerMixin {
@@ -82,13 +77,14 @@ public abstract class ClientPlayerInteractionManagerMixin {
 			double totalDist = oldPos.distanceTo(target.getPos()) - 5; //5 is the default reach distance
 			Vec3d newPos = oldPos.add(direction.multiply(totalDist));
 
-			teleportFromTo(MinecraftClient.getInstance(), oldPos, newPos);
+			PacketHelper.teleportFromTo(MinecraftClient.getInstance(), oldPos, newPos);
 
 			Packet<?> packet = PlayerInteractEntityC2SPacket.attack(target, false);
 			if (mc.getNetworkHandler() != null && mc.getNetworkHandler().getConnection() != null) {
 				((ClientConnectionAccessor) mc.getNetworkHandler().getConnection())._send(packet, null);
 			}
-			teleportFromTo(MinecraftClient.getInstance(), newPos, oldPos);
+
+			PacketHelper.teleportFromTo(MinecraftClient.getInstance(), newPos, oldPos);
 		}
 	}
 
@@ -121,30 +117,5 @@ public abstract class ClientPlayerInteractionManagerMixin {
 	}
 
 	 */
-
-	@Unique
-	void teleportFromTo(MinecraftClient client, Vec3d from, Vec3d to) {
-		MinecraftClient mc = MinecraftClient.getInstance();
-		assert mc.player != null;
-		double maxDist = 7;
-		double targetDist = Math.ceil(from.distanceTo(to) / maxDist);
-
-		for (int i = 1; i <= targetDist; i++) {
-
-			double x = from.x + (to.x - from.x) / targetDist * i;
-			double y = from.y + (to.y - from.y) / targetDist * i;
-			double z = from.z + (to.z - from.z) / targetDist * i;
-
-			Packet<?> packet = new PlayerMoveC2SPacket.PositionAndOnGround(
-					x,
-					y + 1,
-					z,
-					mc.player.isOnGround()
-			);
-			// Send packet immediately using accessor
-			// RIP sendImmediately
-			((ClientConnectionAccessor) Objects.requireNonNull(mc.getNetworkHandler()).getConnection())._send(packet, null);
-		}
-	}
 
 }
