@@ -70,12 +70,12 @@ public class MessyTp implements Module {
             if (mc.options.sneakKey.isPressed()) {
                 teleportDistance = -teleportDistance;
             }
-            for (int packetNum = 0; packetNum < (packetsRequired - 1); packetNum++) {
+            for (int packetNum = 0; packetNum <= (packetsRequired - 1); packetNum++) {
 
                 PlayerMoveC2SPacket currentPosition = new PlayerMoveC2SPacket.Full(
-                        mc.player.getX(),
+                        Math.floor(mc.player.getX()) + 0.500,
                         mc.player.getY(),
-                        mc.player.getZ(),
+                        Math.floor(mc.player.getZ()) + 0.500,
                         mc.player.getYaw(0),
                         mc.player.getPitch(0),
                         true);
