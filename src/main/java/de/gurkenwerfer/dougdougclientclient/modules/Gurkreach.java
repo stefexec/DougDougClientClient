@@ -11,16 +11,17 @@ public class Gurkreach implements Module {
 
     float reach = 120;
 
+    int tick = 0;
+
     @Override
     public void initialize() {
-        System.out.println("ModuleB initialized!");
+        System.out.println("Gurkreach initialized!");
         mc.player.sendMessage(Text.of("Gurkreach enabled!"));
-        // Your module-specific initialization code here
     }
 
     @Override
     public void terminate() {
-        System.out.println("ModuleB terminated!");
+        System.out.println("Gurkreach terminated!");
         mc.player.sendMessage(Text.of("Gurkreach disabled!"));
         // Your module-specific termination code here
     }
@@ -39,5 +40,4 @@ public class Gurkreach implements Module {
         if (!ModuleManager.isModuleEnabled("Gurkreach")) return mc.interactionManager.getCurrentGameMode().isCreative() ? 5.0F : 4.5F;
         return reach;
     }
-
 }

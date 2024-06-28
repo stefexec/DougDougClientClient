@@ -2,23 +2,17 @@ package de.gurkenwerfer.dougdougclientclient.mixin;
 
 import de.gurkenwerfer.dougdougclientclient.classes.ModuleManager;
 import de.gurkenwerfer.dougdougclientclient.modules.Gurkreach;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,7 +22,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Objects;
+
+import static de.gurkenwerfer.dougdougclientclient.utils.PacketHelper.teleportFromTo;
 
 @Mixin(ClientPlayerInteractionManager.class)
 public abstract class ClientPlayerInteractionManagerMixin {
@@ -75,19 +70,17 @@ public abstract class ClientPlayerInteractionManagerMixin {
 	}
 
 	 */
-
 	@Inject(method = "attackEntity", at = @At("HEAD"))
-	private void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo info) {
+	public void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo info) {
 		MinecraftClient mc = MinecraftClient.getInstance();
 
 		if (ModuleManager.isModuleEnabled("Gurkreach")) {
 
 			assert mc.targetedEntity != null;
 			Vec3d oldPos = player.getPos();
-			Vec3d newPos = target.getPos();
-			if (mc.player != null) {
-				mc.player.sendMessage(Text.of("pos: " + oldPos + newPos));
-			}
+			Vec3d direction = target.getPos().subtract(oldPos).normalize();
+			double totalDist = oldPos.distanceTo(target.getPos()) - 5; //5 is the default reach distance
+			Vec3d newPos = oldPos.add(direction.multiply(totalDist));
 
 			teleportFromTo(MinecraftClient.getInstance(), oldPos, newPos);
 
@@ -153,4 +146,5 @@ public abstract class ClientPlayerInteractionManagerMixin {
 			((ClientConnectionAccessor) Objects.requireNonNull(mc.getNetworkHandler()).getConnection())._send(packet, null);
 		}
 	}
+
 }
