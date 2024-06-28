@@ -24,8 +24,8 @@ public class ServerPlayNetworkHandlerMixin {
         if (packet != null) {
             if (ModuleManager.isModuleEnabled("NoFall")) {
                 if (mc.player != null) {
-                    if (!mc.player.getAbilities().creativeMode && mc.player.getVelocity().y > -0.5) {
-                        mc.player.sendMessage(Text.of("Im Falling!"));
+                    if (!mc.player.getAbilities().creativeMode && mc.player.getVelocity().y < -0.5) { // idk why this works in meteor it's the exact opposite way (mc.player.getVelocity().y > -0.5)
+                        //mc.player.sendMessage(Text.of("Im Falling!"));
                         ((PlayerMoveC2SPacketAccessor) packet).setOnGround(true);
                     }
                 }

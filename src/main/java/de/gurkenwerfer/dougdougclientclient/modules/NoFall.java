@@ -17,8 +17,6 @@ public class NoFall implements Module {
 
     }
 
-
-
     @Override
     public void terminate() {
         System.out.println("ModuleC terminated!");
