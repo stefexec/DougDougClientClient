@@ -21,6 +21,7 @@ public class ModuleManager {
         moduleMap.put("MessyTp", new MessyTp());
         moduleMap.put("CrosshairChatter", new CrosshairChatter());
         moduleMap.put("NoFall", new NoFall());
+        moduleMap.put("AirJump", new AirJump());
 
         // Add more modules as needed
         for (Map.Entry<String, Module> entry : moduleMap.entrySet()) {
