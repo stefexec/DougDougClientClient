@@ -5,9 +5,10 @@
   "client": [
     "ClientConnectionAccessor",
     "ClientPlayerInteractionManagerMixin",
+    "ClientPlayNetworkHandlerMixin",
     "GameRendererMixin",
-    "PlayerMoveC2SPacketAccessor",
-    "ClientPlayNetworkHandlerMixin"
+    "LightmapTextureManagerMixin",
+    "PlayerMoveC2SPacketAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
