@@ -22,6 +22,7 @@ public class ModuleManager {
         moduleMap.put("CrosshairChatter", new CrosshairChatter());
         moduleMap.put("NoFall", new NoFall());
         moduleMap.put("AirJump", new AirJump());
+        moduleMap.put("Fullbright", new Fullbright());
 
         // Add more modules as needed
         for (Map.Entry<String, Module> entry : moduleMap.entrySet()) {
