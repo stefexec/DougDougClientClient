@@ -1,12 +1,15 @@
 package de.gurkenwerfer.dougdougclientclient.modules;
 
+import de.gurkenwerfer.dougdougclientclient.classes.ConfigurableModule;
 import de.gurkenwerfer.dougdougclientclient.classes.Module;
+import me.shedaniel.clothconfig2.api.ConfigCategory;
+import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
-public class CrosshairChatter implements Module {
-    private boolean enabled = true; // Default to enabled
+public class CrosshairChatter implements Module, ConfigurableModule {
+    boolean enabled = true; // Default to enabled
 
     @Override
     public void initialize() {
@@ -38,6 +41,13 @@ public class CrosshairChatter implements Module {
     @Override
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    @Override
+    public void buildConfigEntries(ConfigCategory category, ConfigEntryBuilder builder) {
+        category.addEntry(builder.startBooleanToggle(Text.of("Enable/Disable The Module"), enabled)
+                .setSaveConsumer(value -> enabled = value)
+                .build());
     }
 
 }

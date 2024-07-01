@@ -1,8 +1,11 @@
 package de.gurkenwerfer.dougdougclientclient.modules;
 
+import de.gurkenwerfer.dougdougclientclient.classes.ConfigurableModule;
 import de.gurkenwerfer.dougdougclientclient.classes.Module;
 import de.gurkenwerfer.dougdougclientclient.classes.ModuleManager;
 import de.gurkenwerfer.dougdougclientclient.mixin.ClientConnectionAccessor;
+import me.shedaniel.clothconfig2.api.ConfigCategory;
+import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.text.Text;
@@ -10,8 +13,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 
 
-public class MessyTp implements Module {
-    private boolean enabled = false;
+public class MessyTp implements Module, ConfigurableModule {
+    boolean enabled = false;
 
     private static final int MIN_Y = -60;
     private static final int MAX_Y = 320;
@@ -125,5 +128,12 @@ public class MessyTp implements Module {
             currentPos = currentPos.up();
         }
         return lastAirBlock2;
+    }
+
+    @Override
+    public void buildConfigEntries(ConfigCategory category, ConfigEntryBuilder builder) {
+        category.addEntry(builder.startBooleanToggle(Text.of("Enable/Disable The Module"), enabled)
+                .setSaveConsumer(value -> enabled = value)
+                .build());
     }
 }

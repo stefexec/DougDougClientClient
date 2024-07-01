@@ -1,15 +1,18 @@
 package de.gurkenwerfer.dougdougclientclient.modules;
 
+import de.gurkenwerfer.dougdougclientclient.classes.ConfigurableModule;
 import de.gurkenwerfer.dougdougclientclient.classes.Module;
+import me.shedaniel.clothconfig2.api.ConfigCategory;
+import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
-public class AirJump implements Module {
+public class AirJump implements Module, ConfigurableModule {
 
-    private boolean enabled = true; // Default to enabled
-    private int level = 0;
-    private boolean maintainLevel = false; // make toggleable in modmenu maybe
+    boolean enabled = false; // Default to enabled
+    int level = 0;
+    boolean maintainLevel = false; // make toggleable in modmenu maybe
 
     MinecraftClient mc = MinecraftClient.getInstance();
 
@@ -64,6 +67,16 @@ public class AirJump implements Module {
     @Override
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    @Override
+    public void buildConfigEntries(ConfigCategory category, ConfigEntryBuilder builder) {
+        category.addEntry(builder.startBooleanToggle(Text.of("Enable/Disable The Module"), enabled)
+                .setSaveConsumer(value -> enabled = value)
+                .build());
+        category.addEntry(builder.startBooleanToggle(Text.of("Maintain Level"), maintainLevel)
+                .setSaveConsumer(value -> maintainLevel = value)
+                .build());
     }
 
 }

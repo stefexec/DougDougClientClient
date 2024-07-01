@@ -1,23 +1,22 @@
 package de.gurkenwerfer.dougdougclientclient.modules;
 
+import de.gurkenwerfer.dougdougclientclient.classes.ConfigurableModule;
 import de.gurkenwerfer.dougdougclientclient.classes.Module;
+import me.shedaniel.clothconfig2.api.ConfigCategory;
+import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 
-public class Gurkfly implements Module {
-    private boolean enabled = false; // Default to enabled
-
-    // THIS SHIT NEED ITS OWN SECTION IN THE MOD MENU
-    // WILL WORK ON CREATING TABS FOR DIFFERENT MODULES NEXT
-    private final double flySpeed = 2;
-    private final double verticalMult = 2;
-    private final double sprintSpeed = 2;
-    private final int fallTickTime = 19;
-    private final double noFlyDist = 0.03127;
-
+public class Gurkfly implements Module, ConfigurableModule {
+    private boolean enabled = false;
+    private double flySpeed = 2;
+    private double verticalMult = 2;
+    private double sprintSpeed = 2;
+    private int fallTickTime = 19;
+    private double noFlyDist = 0.03127;
 
     MinecraftClient client = MinecraftClient.getInstance();
 
@@ -111,5 +110,28 @@ public class Gurkfly implements Module {
 
             }
         }
+    }
+
+    @Override
+    public void buildConfigEntries(ConfigCategory category, ConfigEntryBuilder builder) {
+        category.addEntry(builder.startBooleanToggle(Text.of("Enable/Disable The Module"), enabled)
+                .setSaveConsumer(value -> enabled = value)
+                .build());
+
+        category.addEntry(builder.startDoubleField(Text.of("Fly Speed"), flySpeed)
+                .setSaveConsumer(value -> flySpeed = value)
+                .build());
+
+        category.addEntry(builder.startDoubleField(Text.of("Vertical Multiplier"), verticalMult)
+                .setSaveConsumer(value -> verticalMult = value)
+                .build());
+
+        category.addEntry(builder.startIntField(Text.of("Fall Tick Time"), fallTickTime)
+                .setSaveConsumer(value -> fallTickTime = value)
+                .build());
+
+        category.addEntry(builder.startDoubleField(Text.of("No Fly Distance"), noFlyDist)
+                .setSaveConsumer(value -> noFlyDist = value)
+                .build());
     }
 }

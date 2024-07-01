@@ -33,7 +33,7 @@ public class ModuleManager {
     }
 
     public static void onGameJoin() {
-        ModConfig config = ModConfig.load();
+        config = ModConfig.load();
         for (Map.Entry<String, Boolean> entry : config.getModuleEnabledMap().entrySet()) {
             String moduleName = entry.getKey();
             boolean isEnabled = entry.getValue();
@@ -43,6 +43,10 @@ public class ModuleManager {
                 disableModule(moduleName);
             }
         }
+    }
+
+    public static Module getModule(String moduleName) {
+        return moduleMap.get(moduleName);
     }
 
     // Method to get module names
@@ -57,7 +61,7 @@ public class ModuleManager {
             module.setEnabled(true);
             module.initialize();
             config.setModuleEnabled(moduleName);
-            config.save(); // Save the config after enabling a module
+            config.save();
         }
     }
 
@@ -68,7 +72,7 @@ public class ModuleManager {
             module.terminate();
             module.setEnabled(false);
             config.setModuleDisabled(moduleName);
-            config.save(); // Save the config after disabling a module
+            config.save();
         }
     }
 
@@ -78,10 +82,10 @@ public class ModuleManager {
     }
 
     public static void toggleModule(String moduleName) {
-        if (ModuleManager.isModuleEnabled(moduleName)) {
-            ModuleManager.disableModule(moduleName);
+        if (isModuleEnabled(moduleName)) {
+            disableModule(moduleName);
         } else {
-            ModuleManager.enableModule(moduleName);
+            enableModule(moduleName);
         }
     }
 }
