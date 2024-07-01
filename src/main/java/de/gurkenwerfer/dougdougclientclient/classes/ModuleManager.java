@@ -2,7 +2,6 @@ package de.gurkenwerfer.dougdougclientclient.classes;
 
 import de.gurkenwerfer.dougdougclientclient.modules.*;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +32,19 @@ public class ModuleManager {
         }
     }
 
+    public static void onGameJoin() {
+        ModConfig config = ModConfig.load();
+        for (Map.Entry<String, Boolean> entry : config.getModuleEnabledMap().entrySet()) {
+            String moduleName = entry.getKey();
+            boolean isEnabled = entry.getValue();
+            if (isEnabled) {
+                enableModule(moduleName);
+            } else {
+                disableModule(moduleName);
+            }
+        }
+    }
+
     // Method to get module names
     public static String[] getModuleNames() {
         return moduleMap.keySet().toArray(new String[0]);
@@ -44,6 +56,8 @@ public class ModuleManager {
         if (module != null && !module.isEnabled()) {
             module.setEnabled(true);
             module.initialize();
+            config.setModuleEnabled(moduleName);
+            config.save(); // Save the config after enabling a module
         }
     }
 
@@ -53,6 +67,8 @@ public class ModuleManager {
         if (module != null && module.isEnabled()) {
             module.terminate();
             module.setEnabled(false);
+            config.setModuleDisabled(moduleName);
+            config.save(); // Save the config after disabling a module
         }
     }
 
@@ -68,5 +84,4 @@ public class ModuleManager {
             ModuleManager.enableModule(moduleName);
         }
     }
-
 }
