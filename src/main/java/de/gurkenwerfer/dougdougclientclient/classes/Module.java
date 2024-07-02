@@ -8,4 +8,5 @@ public interface Module {
     void terminate();
     boolean isEnabled();
     void setEnabled(boolean enabled);
+    void buildConfigEntries(ConfigCategory category, ConfigEntryBuilder builder);
 }

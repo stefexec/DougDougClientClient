@@ -17,12 +17,12 @@ public class MyConfigScreen {
         for (String moduleName : ModuleManager.getModuleNames()) {
             Module module = ModuleManager.getModule(moduleName);
 
-            if (module instanceof ConfigurableModule) {
+            if (module instanceof Module) {
                 ConfigCategory category = builder.getOrCreateCategory(Text.of(moduleName));
                 ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
                 // Build configuration entries for the module
-                ((ConfigurableModule) module).buildConfigEntries(category, entryBuilder);
+                ((Module) module).buildConfigEntries(category, entryBuilder);
             }
         }
 

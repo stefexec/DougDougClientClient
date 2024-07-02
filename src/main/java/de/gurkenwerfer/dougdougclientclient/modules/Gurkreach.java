@@ -1,6 +1,5 @@
 package de.gurkenwerfer.dougdougclientclient.modules;
 
-import de.gurkenwerfer.dougdougclientclient.classes.ConfigurableModule;
 import de.gurkenwerfer.dougdougclientclient.classes.Module;
 import de.gurkenwerfer.dougdougclientclient.classes.ModuleManager;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
@@ -8,7 +7,7 @@ import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
-public class Gurkreach implements Module, ConfigurableModule {
+public class Gurkreach implements Module {
     boolean enabled = false;
     MinecraftClient mc = MinecraftClient.getInstance();
 

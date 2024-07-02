@@ -1,12 +1,11 @@
 package de.gurkenwerfer.dougdougclientclient.modules;
 
-import de.gurkenwerfer.dougdougclientclient.classes.ConfigurableModule;
 import de.gurkenwerfer.dougdougclientclient.classes.Module;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.text.Text;
 
-public class ModuleTemplate implements Module, ConfigurableModule {
+public class ModuleTemplate implements Module {
     private boolean enabled = true; // Default to enabled
 
     @Override

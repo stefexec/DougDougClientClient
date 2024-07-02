@@ -1,6 +1,5 @@
 package de.gurkenwerfer.dougdougclientclient.modules;
 
-import de.gurkenwerfer.dougdougclientclient.classes.ConfigurableModule;
 import de.gurkenwerfer.dougdougclientclient.classes.Module;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
@@ -10,7 +9,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 
-public class Gurkfly implements Module, ConfigurableModule {
+public class Gurkfly implements Module {
     private boolean enabled = false;
     private double flySpeed = 2;
     private double verticalMult = 2;

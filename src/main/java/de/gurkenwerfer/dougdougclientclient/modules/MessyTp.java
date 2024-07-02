@@ -1,6 +1,5 @@
 package de.gurkenwerfer.dougdougclientclient.modules;
 
-import de.gurkenwerfer.dougdougclientclient.classes.ConfigurableModule;
 import de.gurkenwerfer.dougdougclientclient.classes.Module;
 import de.gurkenwerfer.dougdougclientclient.classes.ModuleManager;
 import de.gurkenwerfer.dougdougclientclient.mixin.ClientConnectionAccessor;
@@ -13,7 +12,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 
 
-public class MessyTp implements Module, ConfigurableModule {
+public class MessyTp implements Module {
     boolean enabled = false;
 
     private static final int MIN_Y = -60;

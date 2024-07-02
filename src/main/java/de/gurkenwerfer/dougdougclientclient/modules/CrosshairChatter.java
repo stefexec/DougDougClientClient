@@ -1,6 +1,5 @@
 package de.gurkenwerfer.dougdougclientclient.modules;
 
-import de.gurkenwerfer.dougdougclientclient.classes.ConfigurableModule;
 import de.gurkenwerfer.dougdougclientclient.classes.Module;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
@@ -8,7 +7,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
-public class CrosshairChatter implements Module, ConfigurableModule {
+public class CrosshairChatter implements Module {
     boolean enabled = true; // Default to enabled
 
     @Override
